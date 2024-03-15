@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-vue creta8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      
+        .controls {
+            display :flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .filters span {
+           margin-right: 5px;
+           font-size : 15px;
+           cursor :pointer;
+          
+        }
+        .filters span.active {
+            color : blue;
+        }
+        .dropdown-toggle::after {
+            display: none;
+        }
+        .task {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .task label.checked {
+          text-decoration: line-through;
+        }
+        .filters span.active {
+            color : #3C87FF;
+        }
+       
+      
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Yapılacaklar Listesi
+                    </div>
+                    <div class="card-body">
+                        <form >
+                            <div class="form-group">
+                                <input type="text" id="txtTaskName" class="form-control">
+                                <div></div>
+                                <br />
+                                <button type="submit" class="btn btn-primary" id="btnAddNewTask">Ekle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header controls">
+                     <div class="filters">
+                        <span class="active" id="all">Hepsi</span>
+                        <span id="pending">Yapılacaklar</span>
+                        <span id="completed">Tamamlananlar</span>
+                     </div>
+                    </div>
+                    <ul id="task-list" class="list-group-item">
+                      
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+     // let gorevListesi = [{"id":1,"gorevAdi":"alışveriş","durum":"tamamlandı"}];
+     let gorevListesi = [];
+
+     if(localStorage.getItem("gorevListesiTechCareer")!== null) {
+           gorevListesi = JSON.parse(localStorage.getItem("gorevListesiTechCareer"));
+     };
+
+     displayTasks();
+      const taskInput = document.querySelector("#txtTaskName");
+      document.querySelector("#btnAddNewTask").addEventListener("click",yeniTask);
+      const filters = document.querySelectorAll(".filters span");
+
+      let editId;
+      let isEditTask = false;
+      function yeniTask(event){
+         checkLength(taskInput,3);
+         console.log("tiklandi");
+         console.log(taskInput.value);
+
+
+         if(taskInput.value.length <3)
+         {
+            checkLength(taskInput,3);
+         }
+         else
+         {
+        if(!isEditTask)
+            {
+         gorevListesi.push({"id": gorevListesi.length+1,"gorevAdi": taskInput.value,"durum":"pending"});
+            }
+            else
+            {
+                for(let gorev of gorevListesi)
+                {
+                    if(gorev.id == editId) {
+                        gorev.gorevAdi = taskInput.value;
+                    }
+                    isEditTask = false;
+                }
+            }
+            taskInput.value = "";
+            displayTasks(document.querySelector("span.active").id);
+            localStorage.setItem("gorevListesiTechCareer",JSON.stringify(gorevListesi));
+         }
+         event.preventDefault();
+        };
+
+        function checkLength(input, min) {
+            if (input.value.length < min) {
+
+                hataGoster(input, "en az 3 karakter olmalidir.");
+            } else {
+                success(input);
+            }
+        };
+        
+        function hataGoster(input, message) {
+            input.className = 'form-control is-invalid';
+            const div = input.nextElementSibling;
+            div.innerText = message;
+            div.className = 'invalid-feedback';
+        };
+        function success(input) {
+            input.className = 'form-control is-valid';
+        };
+    
+        function displayTasks(filter) {
+            let ul = document.getElementById("task-list");
+            ul.innerHTML = "";
+            for(let gorev of gorevListesi)
+            {
+                let completed = gorev.durum =="completed" ? "checked": "";
+                if(filter == gorev.durum || filter == "all")
+                {
+                let li = `<li class=task list-group-item> 
+                        <div class="form-check">
+                            <input type="checkbox" onclick="updateStatus(this)" id="${gorev.id}" class="form-check-input" ${completed}>
+                            <label for="${gorev.id}" class="form-check-label" ${completed}>${gorev.gorevAdi}</label>
+                            </div>
+                                <div class="dropdown">
+                     <button class="btn btn-link dropdown-toggle"
+                type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis"></i>
+            </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a onclick='editTask(${gorev.id},"${gorev.gorevAdi}")' class="dropdown-item" href="#"><i class="fa-solid fa-pen-to-square"></i>Düzenle</a></li>
+                            <li><a onclick="deleteTask(${gorev.id})" class="dropdown-item" href="#"><i class="fa-solid fa-trash-can-list"></i>Sil</a></li>
+                        </ul>
+</div>
+                    </li>`
+                ul.insertAdjacentHTML("beforeend",li);
+                }
+            }
+        }
+
+        for (let span of filters) {
+            span.addEventListener("click",function() {
+                document.querySelector("span.active").classList.remove("active");
+                span.classList.add("active");
+                displayTasks(span.id);
+            })
+        }
+
+        function deleteTask(id) {
+            console.log("silinecek id:"+id);
+            console.log("silindi çağrıldı");
+            let deletedId;
+        //gönderilen id nin listedeki o an hangi silinecek eleman olduğunu bulmak için yazıldı.
+             for(let index in gorevListesi) {
+                if(gorevListesi[index] == id)
+                {
+                    deletedId = index;
+                }
+             }
+
+            gorevListesi.splice(deletedId,1);
+            console.log(gorevListesi);
+            displayTasks(document.querySelector("span.active").id);
+            localStorage.setItem("gorevListesiTechCareer",JSON.stringify(gorevListesi));
+        }
+
+        function editTask(taskId,taskName) {
+            editId = taskId;
+            isEditTask = true;
+            taskInput.value = taskName;
+            taskInput.focus();
+            taskInput.classList.add("active");
+            console.log("düzenlenecek id:"+taskId);
+            console.log("düzenle çağrıldı");
+
+        }
+
+        function updateStatus(selectedTask) {
+            let label = selectedTask.nextElementSibling;
+            let durum;
+
+            if(selectedTask.checked) {
+                label.classList.add("checked");
+                durum = "completed";
+
+            }else {
+                label.classList.remove("checked");
+                durum = "pending";
+            }
+
+            for (let gorev of gorevListesi) {
+                if(gorev.id == selectedTask.id) {
+                    gorev.durum = durum;
+                }
+            }
+            displayTasks(document.querySelector("span.active").id);
+            localStorage.setItem("gorevListesiTechCareer",JSON.stringify(gorevListesi));
+        }
+
+         
+
+    </script>
+</body>
+</html>

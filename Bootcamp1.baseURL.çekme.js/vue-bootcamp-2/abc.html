@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>Sayfa Başlangıç</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.0/jquery.js"> </script>
+<script src="abc.js"> </script>
+<link rel="stylesheet" type="text/css" href="a.css">
+<script>
+function merhaba2() {
+alert('merhaba dünya2');
+}
+
+</script>
+
+<style>
+ #sidebar{
+  color: red;
+  background-color: white;
+}
+.box
+{
+    font-size:36px;
+    background-color: red;
+}
+.box2 {
+    border:1px solid black;
+    color:pink;
+}
+</style>
+</head>
+<body>
+Merhaba Dünya  <br/>
+<a href="ikincisayfa.html">ikinci sayfaya git </a>
+<br />
+
+<a href="ikincisayfa.html"><img src="manzara.jpg" width="200px" heigh="200px"></a>
+
+<table border="1">
+<tr>
+<td>1.kolon</td><td>2.kolon</td>
+</tr>
+<tr>
+<td>3.kolon</td><td>4.kolon</td>
+</tr>
+</table>
+<br />
+<ul>
+<li>Kahve</li>
+<li>Süt</li>
+</ul>
+
+<form action="ikincisayfa.html" method="get">
+ad : <input type="text" id="adi" name="adi" />  <br />
+soyad : <input type="text" id="soyadi" name="soyadi" />
+<br />
+<input type="submit" value="gonder" />
+</form>
+<br />
+<select id="linkler">
+<option value="">Seçiniz </option>
+<option value="https://www.facebook.com">Facebook</option>
+<option value="https://www.google.com">Google</option>
+<option value="https://www.twitter.com">Twitter</option>
+</select>
+
+<script type="text/javascript" >
+$('#linkler').change(function() {
+window.location = $(this).val()
+});
+</script>
+
+<br />
+
+<input type="button" value="tıkla"  onclick="merhaba2()" />
+
+<br />
+
+<p>Paragra1 yazısı</p>
+
+<p class="box2">Paragraf2 yazısı</p>
+
+<p id="sidebar">içerik </p>
+
+<div class="box box2">Div içerik</div>
+
+<div style="background-color: blue;font-size: 30px; width: 400px;height: 200px;">div içerik 2</div>
+
+</body>
+</html>
+
+
+

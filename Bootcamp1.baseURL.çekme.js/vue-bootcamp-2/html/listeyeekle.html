@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="#" method="post">
+        <input type="text" id="yazi" value="" >
+        <input type="button" id="kaydet" value="takım ekle" >
+    </form>
+    <select id="takim" >
+    </select>
+    <option value="galatasaray">galatasaray</option>
+    <script>
+      
+        var yazi = document.getElementById("yazi");
+        var kaydet= document.getElementById("kaydet");
+        var takim = document.getElementById("takim");
+
+        kaydet.onclick = function(e) {
+            var yeniOpt = document.createElement("option");
+            yeniOpt.value = yazi.value;
+            yeniOpt.innerHTML = yazi.value;
+            takim.add(yeniOpt);
+        }
+    </script>
+</body>
+</html>

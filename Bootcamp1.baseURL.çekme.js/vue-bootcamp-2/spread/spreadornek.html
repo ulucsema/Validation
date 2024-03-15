@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="basitSpread()">Basit Spread</button>
+    <button onclick="ornek()">Ornek</button>
+    <button onclick="arrayKopyalama()">array Kopyalama</button>
+    <button onclick="objeKopyalama()">Obje Kopyalama</button>
+    <button onclick="diziBirlestir()">Dizi Birleştir</button>
+    <button onclick="objeBirlestir()">Obje Birleştir</button>
+    <button onclick="stringOrnek()">String Örnek</button>
+    <button onclick="fonksiyonaParametreOrnek()">Fonksiyona Parametre Örnek</button>
+    <button onclick="fonksiyonaParametreOrnek2()">Fonksiyona Parametre Örnek2</button>
+    <button onclick="deStructuringCagir()">DeStructuring Örnek</button>
+    <button onclick="spreadManipulasyon()">Spread Manipulasyon</button>
+    <div>div1</div>
+    <div>div2</div>
+    <div>div3</div>
+    <div>div4</div>
+
+    <script>
+
+        function basitSpread() {
+            const meyveler = ['Elma','Armut','portakal','mandalina'];
+            console.log(...meyveler);
+        }
+
+
+        function ornek() {
+            let meyveler = ['Elma','Armut','portakal','mandalina'];
+            let meyveler_copy = meyveler;
+            meyveler.push('çilek');
+            console.log(meyveler_copy);
+        }
+
+
+        function arrayKopyalama() {
+            let meyveler = ['Elma','Armut','portakal','mandalina'];
+            let meyveler_copy = [...meyveler];
+            console.log(meyveler_copy);
+            meyveler.push('çilek');
+            console.log(meyveler_copy);
+            console.log(meyveler);
+        }
+
+        function objeKopyalama() {
+            const user = {
+                name : "ibrahim",
+                surname : "gökyar"
+            }
+            const userCopy = {...user}
+            console.log(userCopy);
+            user.age = 35;
+            console.log(userCopy);
+            console.log(user);
+        }
+
+        function diziBirlestir() {
+            const erkekIsimleri = ['Hakan','mehmet'];
+            const kadinIsimleri = ['Aslı','Handan'];
+            const isimler = [...kadinIsimleri,...erkekIsimleri];
+            console.log(isimler);
+        }
+
+        function objeBirlestir() {
+            const user = {
+                name : "ibrahim",
+                surname : "gökyar"
+            }
+
+            const evcilHayvanlar = {
+                pets : {
+                    kopek : "asdf",
+                    kediler : ['tekir','pamuk']
+                }
+            }
+            const userDetay = {...user,...evcilHayvanlar};
+            console.log(userDetay);
+        }
+
+        function stringOrnek() {
+            let username = 'ibrahimgokyar';
+            let chars = [...username];
+            console.log(chars);
+        }
+
+        function kareAl(...sayilar)
+        {
+            return sayilar.map(sayi => sayi* sayi);
+        }
+
+        function fonksiyonaParametreOrnek() {
+            console.log(kareAl(1,3,4,7,8,19,22,33,44));
+        }
+
+
+        function stringBirlestir(name,surname) {
+            return `${name} ${surname}`
+        }
+
+        function fonksiyonaParametreOrnek2() {
+          let user = ['ibrahim','gökyar'];
+          console.log(stringBirlestir(...user));
+        }
+
+
+        function deStructuringCagir()
+        {
+            const person = {
+                name :'ibrahim',
+                age : 46,
+                occupation : 'developer',
+                yetenekler : 'java,ios,csharp,android'
+            }
+
+            const {name,age,...others} = person
+            console.log(`Ad : ${name}`);
+            console.log(`Yaş : ${age}`);
+            console.log(others);
+        }
+
+        function spreadManipulasyon() {
+              const divs  = document.querySelectorAll('div');
+              const divsArray = [...divs];
+              divsArray.forEach((div,key) => {
+                 div.innerText = `${div.innerText} #${key+1}`;
+              }
+              );
+        }
+    </script>
+
+
+
+
+</body>
+</html>

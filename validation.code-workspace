@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "vue.jsProjects/validation"
+		},
+		{
+			"path": "Bootcamp1.baseURL.çekme.js/10 mart"
+		},
+		{
+			"path": "vue.jsProjects/vue-todos-crud"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "validation"
+	}
+}
